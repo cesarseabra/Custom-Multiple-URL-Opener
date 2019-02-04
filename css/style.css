@@ -1,0 +1,13 @@
+body {
+  min-width: 200px;
+  height: 70px;
+	background-color: #FAC51C;
+	font-family: Lucida Sans Unicode;
+  text-align: center;
+  margin-bottom: 30px;
+}
+#error {
+	color: #B8312F;
+	padding-bottom: 10px;
+  height: 20px;
+}

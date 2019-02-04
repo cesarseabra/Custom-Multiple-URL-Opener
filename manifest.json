@@ -1,0 +1,32 @@
+{
+  "manifest_version": 1,
+  "name": "Custom URL Opener",
+  "version": "1.0",
+
+  "author": "César Seabra",
+  "developer": {
+    "name": "César Seabra",
+    "url": "https://github.com/cesarseabra"
+  },
+
+  "description": "Opens defined URL in new tabs with custom parameters",
+  "homepage_url": "",
+  "icons": {
+    "48": "icons/icon.png"
+  },
+
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+
+  "browser_action": {
+    "default_icon": "icons/icon.png",
+    "default_title": "Custom URL Opener",
+    "default_popup": "index.html"
+  },
+
+  "options_ui": {
+    "page": "options.html"
+  }
+}
