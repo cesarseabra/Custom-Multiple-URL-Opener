@@ -1,5 +1,5 @@
 {
-  "manifest_version": 1,
+  "manifest_version": 2,
   "name": "Custom URL Opener",
   "version": "1.0",
 
@@ -10,7 +10,7 @@
   },
 
   "description": "Opens defined URL in new tabs with custom parameters",
-  "homepage_url": "",
+  "homepage_url": "https://github.com/cesarseabra",
   "icons": {
     "48": "icons/icon.png"
   },

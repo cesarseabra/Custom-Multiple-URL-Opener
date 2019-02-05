@@ -1,18 +1,48 @@
 <!DOCTYPE html>
 <html lang="en-us">
+
 <head>
-    <link rel="stylesheet" type="text/css" href="css/options.css" charset="utf-8"/>
-  <meta charset="UTF-8"/>
+  <link rel="stylesheet" type="text/css" href="css/options.css" charset="utf-8" />
+  <meta charset="UTF-8" />
 </head>
 
 <body>
+  <div class="head-section">
+    <button class="url-clear-all">Clear All</button>
+    <button class="url-add">Add URL</button>
+  </div>
 
-  <div id="error"></div>
-  <label for="urlOption">URL:</label>
-  <input type="text" id="urlOption"/>&nbsp;[PARAMETER]
-  <button id="save">Save</button>
+  <div class="url-section">
+    <div class="input-section">
+      <input class="url-input">
+      <button class="url-delete">Delete</i></button>
+    </div>
+    <div class="input-section">
+      <input class="url-input">
+      <button class="url-delete">Delete</button>
+    </div>
+    <div class="input-section">
+      <input class="url-input">
+      <button class="url-delete">Delete</button>
+    </div>
+    <div class="input-section">
+      <input class="url-input">
+      <button class="url-delete">Delete</button>
+    </div>
+  </div>
 
-<script src="js/options.js"></script>
+  <div class="message-section">
+    <div class="message error">Error Message</div>
+    <div class="message success">Success Message</div>
+    <div class="message warning">Warning Message</div>
+  </div>
+
+  <div class="foot-section">
+    <button class="url-save">Save</button>
+  </div>
+
+  <script src="js/options.js"></script>
 
 </body>
+
 </html>
