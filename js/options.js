@@ -1,3 +1,23 @@
+var Options = {
+	dbKey: null,
+	urlList:null,
+	init:function (param) {  },
+	validateUrl: function (params) {},
+	validateAllUrl: function (param) {},
+	saveOptions: function (param) {},
+	restoreOptions: function (param) {},
+	clearAll:function (param) {  },
+	addUrl:function (param) {  },
+	deleteUrl:function (param) {  },
+	parseUrl: function (param) {},
+	setMessage:function (message,type) {  },
+	clearMessages:function (param) {  }
+}
+
+
+
+
+
 function saveOptions() {
 	var url = document.getElementById("urlOption").value;
 	var error = document.getElementById("error");

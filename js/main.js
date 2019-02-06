@@ -1,3 +1,14 @@
+var Main = {
+	searchTerm: null,
+	errors = [],
+	init: function (param) {},
+	getSearchTerm: function (param) {},
+	setError: function (param) {},
+	openNewTab: function (url) {},
+	openUrls: function (param) {},
+	parseUrl: function (param) {},
+}
+
 function setErrorText(errorText) {
 	var divError = document.getElementById("error");
 	divError.innerText = errorText + "\n";
