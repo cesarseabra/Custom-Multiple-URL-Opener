@@ -1,108 +1,96 @@
 var Main = {
-	searchTerm: null,
-	errors = [],
-	init: function (param) {},
-	getSearchTerm: function (param) {},
-	setError: function (param) {},
-	openNewTab: function (url) {},
-	openUrls: function (param) {},
-	parseUrl: function (param) {},
+	e: {
+		searchBox: '#searchBox',
+		searchBtn: '#searchBtn',
+		errorSection: '.error'
+	},
+	dbKey: 'urlList',
+	errors: [],
+	init: function () {
+		$(Main.e.searchBtn).click(function (e) {
+			e.preventDefault();
+			Main.setSearchState('off');
+			Main.openNewTab('https://www.google.com');
+			/*Main.getUrlList();*/
+			Main.setSearchState('on');
+			$(Main.e.searchBox).val('');
+		});
+
+		$(Main.e.searchBox).on('keypress', function (e) {
+			if (e.which === 13) {
+				Main.setSearchState('off');
+				/*Main.getUrlList();*/
+				Main.setSearchState('on');
+				$(this).val('');
+			}
+		});
+
+		//Todo missing event listener for err button -> persistent listener
+	},
+	getSearchTerm: function (param) {
+		var term = $(Main.e.searchBox).val();
+		if (term.trim() == '') {
+			throw '';
+		}
+		return term.trim();
+	},
+	getUrlList: function () {
+		Main.errors = [];
+		browser.storage.local.get(Main.dbKey)
+			.then(function (item) {
+				Main.openUrls(item.urlList);
+			}, function (error) {
+				Main.errors.push({
+					type: 'storage_get',
+					msg: 'Could not retrieve stored links.',
+					error: error
+				});
+			});
+	},
+	setError: function () {
+		if (errors.length > 0) {
+			$(Main.e.errorSection).append(Proto.errorBtn());
+		}
+	},
+	openNewTab: function (urlP) {
+		var creating = browser.tabs.create({
+			url: urlP
+		});
+		creating.then(function (param) {
+			console.log(`OPEN OK: ${urlP}`);
+		}, function (param) {
+			Main.errors.push({
+				type: 'storageGet',
+				msg: 'Could not retrieve stored links.',
+				error: error
+			});
+		});
+	},
+	openUrls: function (urlList) {
+		for (let i = 0; i < urlList.length; i++) {
+			const defLink = Main.parseUrl(urlList[i]);
+			Main.openNewTab(defLink);
+		}
+		Main.setError();
+	},
+	parseUrl: function (urlP) {
+		var term = Main.getSearchTerm();
+		return urlP.replace(new RegExp('{{term}}', 'g'), term);
+	},
+	setSearchState: function (state) {
+		switch (state) {
+			case 'on':
+				$(Main.e.searchBox).attr("disabled", "disabled");
+				$(Main.e.searchBtn).attr("disabled", "disabled");
+				break;
+			default: // off
+				$(Main.e.searchBox).removeAttr("disabled");
+				$(Main.e.searchBtn).removeAttr("disabled");
+				break;
+		}
+	}
 }
 
-function setErrorText(errorText) {
-	var divError = document.getElementById("error");
-	divError.innerText = errorText + "\n";
-};
-
-function returnError(errorText) {
-	setErrorText(errorText);
-	throw "";
-};
-
-var parameter,
-	url,
-	isError = 0;
-
-function removeSpaces(string) {
-	while (string.charAt(string.length - 1) === " ") {
-		string = string.slice(0, string.length - 1);
-	}
-
-	if (string.charAt(0) === " ") {
-		var temp = string.split(" ");
-		string = temp[temp.length - 1];
-	}
-
-	return string;
-};
-
-function removeSkypeFormatting(string) {
-	if (string.charAt(0) === "[") {
-		var temp = string.split(" ");
-		string = temp[temp.length - 1];
-	}
-
-	return string;
-};
-
-function openWindow() {
-	window.open(url + parameter);
-	window.close();
-};
-
-var list = [];
-
-function onGot(item) {
-	url = item.savedURL;
-
-	parameter = document.getElementById("parameter").value;
-	parameter = removeSpaces(parameter);
-	parameter = removeSkypeFormatting(parameter);
-
-	if (parameter === "") {
-		isError = 1;
-		returnError("Please insert parameter");
-	} else if (url === undefined) {
-		isError = 1;
-		returnError("Please define URL in Options");
-	} else {
-		openWindow();
-	}
-}
-
-function onError(item) {
-	returnError("Can't get URL from Options");
-}
-
-function openURL() {
-	var item = browser.storage.local.get("savedURL");
-	item.then(onGot, onError);
-}
-
-function inputParameterListener(e) {
-	var enter = 13;
-
-	if (e.keyCode === enter) {
-		openURL();
-	}
-};
-
-function listenInputParameter(inputParameter) {
-	if (inputParameter.addEventListener) {
-		inputParameter.addEventListener("keydown", inputParameterListener, false);
-	} else if (inputParameter.attachEvent) {
-		inputParameter.attachEvent("keydown", inputParameterListener);
-	}
-};
-
-function listenParameter() {
-	listenInputParameter(document.getElementById("parameter"));
-};
-
-if (window.addEventListener) {
-	window.addEventListener("load", this.listenParameter, false);
-} else if (window.attachEvent) {
-	window.attachEvent("onload", this.listenParameter);
-} else {
-	document.addEventListener("load", this.listenParameter, false);
-}
+$(function () {
+	Main.init();
+});
