@@ -2,46 +2,35 @@
 <html lang="en-us">
 
 <head>
+  <script type="text/javascript" src="js/jquery-3.3.1.min.js" charset="utf-8"></script>
+  <script src="js/lodash.min.js"></script>
+  <script src="js/options.js"></script>
+  <script src="js/prototypes.js"></script>
   <link rel="stylesheet" type="text/css" href="css/options.css" charset="utf-8" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+  crossorigin="anonymous">
   <meta charset="UTF-8" />
 </head>
 
 <body>
+  <p>Here you can add your links. The tag '{{tag}}' will be used to be your query substitute. Note: dont forget to
+    include the https:// on the URL.</p>
   <div class="head-section">
-    <button class="url-clear-all">Clear All</button>
-    <button class="url-add">Add URL</button>
+    <button id="clearAllBtn" class="url-clear-all">Clear All</button>
+    <button id="addBtn" class="url-add">Add URL</button>
   </div>
 
   <div class="url-section">
-    <div class="input-section">
-      <input class="url-input">
-      <button class="url-delete">Delete</i></button>
-    </div>
-    <div class="input-section">
-      <input class="url-input">
-      <button class="url-delete">Delete</button>
-    </div>
-    <div class="input-section">
-      <input class="url-input">
-      <button class="url-delete">Delete</button>
-    </div>
-    <div class="input-section">
-      <input class="url-input">
-      <button class="url-delete">Delete</button>
-    </div>
+
   </div>
 
   <div class="message-section">
-    <div class="message error">Error Message</div>
-    <div class="message success">Success Message</div>
-    <div class="message warning">Warning Message</div>
+    
   </div>
 
   <div class="foot-section">
-    <button class="url-save">Save</button>
+    <button id="saveBtn" class="url-save">Save</button>
   </div>
-
-  <script src="js/options.js"></script>
 
 </body>
 

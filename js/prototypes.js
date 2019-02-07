@@ -1,9 +1,11 @@
 var Proto = {
 
-    urlInput: function () {
+    urlInput: function (urlP) {
         return `<div class="input-section">
-                    <input class="url-input">
-                    <button class="url-delete">Delete</button>
+                    <input class="url-input" value="${urlP}">
+                    <button class="url-delete">
+                        <i class="fa fa-trash"></i>
+                    </button>
                 </div>`;
     },
     errorMessage: function (message) {

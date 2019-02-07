@@ -2,7 +2,8 @@ var Main = {
 	e: {
 		searchBox: '#searchBox',
 		searchBtn: '#searchBtn',
-		errorSection: '.error'
+		errorSection: '.error',
+		errorBtn: '#errorBtn',
 	},
 	dbKey: 'urlList',
 	errors: [],
@@ -10,8 +11,7 @@ var Main = {
 		$(Main.e.searchBtn).click(function (e) {
 			e.preventDefault();
 			Main.setSearchState('off');
-			Main.openNewTab('https://www.google.com');
-			/*Main.getUrlList();*/
+			Main.getUrlList();
 			Main.setSearchState('on');
 			$(Main.e.searchBox).val('');
 		});
@@ -19,9 +19,15 @@ var Main = {
 		$(Main.e.searchBox).on('keypress', function (e) {
 			if (e.which === 13) {
 				Main.setSearchState('off');
-				/*Main.getUrlList();*/
+				Main.getUrlList();
 				Main.setSearchState('on');
 				$(this).val('');
+			}
+		});
+
+		$('body').on('click', Main.e.errorBtn, function () {
+			if (window.confirm("Do you really want to delete all the Urls?")) {
+
 			}
 		});
 
