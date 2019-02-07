@@ -6,22 +6,31 @@ var Main = {
 		errorBtn: '#errorBtn',
 	},
 	dbKey: 'urlList',
+	searchTerm: null,
 	errors: [],
 	init: function () {
 		$(Main.e.searchBtn).click(function (e) {
 			e.preventDefault();
-			Main.setSearchState('off');
-			Main.getUrlList();
-			Main.setSearchState('on');
-			$(Main.e.searchBox).val('');
+			try {
+				Main.setSearchState('off');
+				Main.getSearchTerm();
+				Main.getUrlList();
+			} catch (error) {} finally {
+				Main.setSearchState('on');
+				$(Main.e.searchBox).val('');
+			}
 		});
 
 		$(Main.e.searchBox).on('keypress', function (e) {
 			if (e.which === 13) {
-				Main.setSearchState('off');
-				Main.getUrlList();
-				Main.setSearchState('on');
-				$(this).val('');
+				try {
+					Main.setSearchState('off');
+					Main.getSearchTerm();
+					Main.getUrlList();
+				} catch (error) {} finally {
+					Main.setSearchState('on');
+					$(this).val('');
+				}
 			}
 		});
 
@@ -33,12 +42,12 @@ var Main = {
 
 		//Todo missing event listener for err button -> persistent listener
 	},
-	getSearchTerm: function (param) {
+	getSearchTerm: function () {
 		var term = $(Main.e.searchBox).val();
 		if (term.trim() == '') {
-			throw '';
+			throw 'Term cannot be empty';
 		}
-		return term.trim();
+		Main.searchTerm = term.trim();
 	},
 	getUrlList: function () {
 		Main.errors = [];
@@ -64,10 +73,10 @@ var Main = {
 		});
 		creating.then(function (param) {
 			console.log(`OPEN OK: ${urlP}`);
-		}, function (param) {
+		}, function (error) {
 			Main.errors.push({
 				type: 'storageGet',
-				msg: 'Could not retrieve stored links.',
+				msg: `Could not open the URL: ${urlP}`,
 				error: error
 			});
 		});
@@ -75,23 +84,23 @@ var Main = {
 	openUrls: function (urlList) {
 		for (let i = 0; i < urlList.length; i++) {
 			const defLink = Main.parseUrl(urlList[i]);
+			console.log('defLink: ', defLink);
 			Main.openNewTab(defLink);
 		}
 		Main.setError();
 	},
 	parseUrl: function (urlP) {
-		var term = Main.getSearchTerm();
-		return urlP.replace(new RegExp('{{term}}', 'g'), term);
+		return urlP.replace(new RegExp('{{tag}}', 'g'), Main.searchTerm);
 	},
 	setSearchState: function (state) {
 		switch (state) {
 			case 'on':
-				$(Main.e.searchBox).attr("disabled", "disabled");
-				$(Main.e.searchBtn).attr("disabled", "disabled");
+				$(Main.e.searchBox).prop('disabled', false);
+				$(Main.e.searchBtn).prop('disabled', false);
 				break;
 			default: // off
-				$(Main.e.searchBox).removeAttr("disabled");
-				$(Main.e.searchBtn).removeAttr("disabled");
+				$(Main.e.searchBox).prop('disabled', true);
+				$(Main.e.searchBtn).prop('disabled', true);
 				break;
 		}
 	}

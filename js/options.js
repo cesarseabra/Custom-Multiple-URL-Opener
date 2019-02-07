@@ -33,8 +33,7 @@ var Options = {
 		browser.storage.local.get(Options.dbKey)
 			.then(function (item) {
 				var list = item.urlList;
-
-				if (list.length < 1) {
+				if (list.length == 0) {
 					Options.addUrl(Options.defaultUrl);
 				} else {
 					for (let i = 0; i < list.length; i++) {
@@ -47,17 +46,16 @@ var Options = {
 			});
 	},
 	saveOptions: function () {
-		var urlList = Options.urlList;
 		Options.clearMessages();
 		Options.getAllUrl();
 
-		if (_.xor(Options.urlList, Options.dbUrlList).length < 0) {
-			Options.setMessage('No alterations where made. Content not saved!','warning');
+		if (_.xor(Options.urlList, Options.dbUrlList).length == 0) {
+			Options.setMessage('No alterations where made. Content not saved!', 'warning');
 			throw "No alterations where made!";
 		}
 
 		browser.storage.local.set({
-				urlList
+				urlList: Options.urlList
 			})
 			.then(function (item) {
 				console.log('SET OK: ', item)
