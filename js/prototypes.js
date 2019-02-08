@@ -2,7 +2,7 @@ var Proto = {
 
     urlInput: function (urlP) {
         return `<div class="input-section">
-                    <input class="url-input" value="${urlP}">
+                    <input class="url-input" value="${urlP}" placeholder="Insert URL">
                     <button class="url-delete">
                         <i class="fa fa-trash"></i>
                     </button>

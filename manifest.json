@@ -9,7 +9,7 @@
     "url": "https://github.com/cesarseabra"
   },
 
-  "description": "Opens defined URL in new tabs with custom parameters",
+  "description": "Opens defined URL in new tabs with custom search parameters. Use the tag '{{tag}}' qhere you want your query to be replaced.",
   "homepage_url": "https://github.com/cesarseabra",
   "icons": {
     "48": "icons/icon.png"
@@ -18,7 +18,8 @@
   "permissions": [
     "activeTab",
     "storage",
-    "tabs"
+    "tabs",
+    "notifications"
   ],
 
   "browser_action": {

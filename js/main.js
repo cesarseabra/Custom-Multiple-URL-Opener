@@ -33,14 +33,6 @@ var Main = {
 				}
 			}
 		});
-
-		$('body').on('click', Main.e.errorBtn, function () {
-			if (window.confirm("Do you really want to delete all the Urls?")) {
-
-			}
-		});
-
-		//Todo missing event listener for err button -> persistent listener
 	},
 	getSearchTerm: function () {
 		var term = $(Main.e.searchBox).val();
@@ -55,24 +47,46 @@ var Main = {
 			.then(function (item) {
 				Main.openUrls(item.urlList);
 			}, function (error) {
-				Main.errors.push({
-					type: 'storage_get',
-					msg: 'Could not retrieve stored links.',
-					error: error
+				browser.notifications.create('get-err-notification', {
+					"type": "basic",
+					"iconUrl": browser.extension.getURL("icons/error.png"),
+					"title": "Error!",
+					"message": "Could not retrieve the URL list from the DB."
 				});
 			});
 	},
 	setError: function () {
-		if (errors.length > 0) {
-			$(Main.e.errorSection).append(Proto.errorBtn());
+		console.log('SET ERROR');
+		var message;
+		var icon;
+		var title;
+		if (Main.errors.length > 0) {
+			title = 'Error!';
+			icon = 'icons/error.png';
+			message = "The following errors ocurred:";
+			for (let i = 0; i < Main.errors.length; i++) {
+				const elem = Main.errors[i];
+				message += `\n${elem.msg}`;
+			}
+		}else{
+			title = 'Success!';
+			icon = 'icons/success.png';
+			message = 'All URLs where opened successfully!';
 		}
+
+		browser.notifications.create('open-err-notification', {
+			"type": "basic",
+			"iconUrl": browser.extension.getURL(icon),
+			"title": title,
+			"message": message
+		});
 	},
 	openNewTab: function (urlP) {
-		var creating = browser.tabs.create({
+		var tabV = browser.tabs.create({
 			url: urlP
 		});
-		creating.then(function (param) {
-			console.log(`OPEN OK: ${urlP}`);
+		tabV.then(function (param) {
+
 		}, function (error) {
 			Main.errors.push({
 				type: 'storageGet',
@@ -80,14 +94,21 @@ var Main = {
 				error: error
 			});
 		});
+
+		return tabV;
 	},
 	openUrls: function (urlList) {
+		var promises = [];
 		for (let i = 0; i < urlList.length; i++) {
 			const defLink = Main.parseUrl(urlList[i]);
-			console.log('defLink: ', defLink);
-			Main.openNewTab(defLink);
+			promises.push(Main.openNewTab(defLink));
 		}
-		Main.setError();
+
+		console.log('promises: ', promises);
+
+		Promise.all(promises).then(function (values) {
+			Main.setError();
+		});
 	},
 	parseUrl: function (urlP) {
 		return urlP.replace(new RegExp('{{tag}}', 'g'), Main.searchTerm);

@@ -33,7 +33,7 @@ var Options = {
 		browser.storage.local.get(Options.dbKey)
 			.then(function (item) {
 				var list = item.urlList;
-				if (list.length == 0) {
+				if (!list || list.length == 0) {
 					Options.addUrl(Options.defaultUrl);
 				} else {
 					for (let i = 0; i < list.length; i++) {
@@ -67,13 +67,16 @@ var Options = {
 	},
 	clearAll: function () {
 		if (window.confirm("Do you really want to delete all the Urls?")) {
+			Options.clearMessages();
 			$(Options.e.inputSection).remove();
 		}
 	},
 	addUrl: function (urlP) {
+		Options.clearMessages();
 		$(Options.e.urlSection).append(Proto.urlInput(urlP));
 	},
 	deleteUrl: function (e) {
+		Options.clearMessages();
 		e.closest(Options.e.inputSection).remove();
 	},
 	checkEmpty: function (urlP) {
