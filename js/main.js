@@ -8,6 +8,10 @@ var Main = {
 	dbKey: 'urlList',
 	searchTerm: null,
 	errors: [],
+	/**
+	 * Init function, here are declared all the events related to the buttons and inputs.
+	 *
+	 */
 	init: function () {
 		$(Main.e.searchBtn).click(function (e) {
 			e.preventDefault();
@@ -34,6 +38,11 @@ var Main = {
 			}
 		});
 	},
+	/**
+	 * Sets the search term typed by the user in the input box.
+	 * @throws - if the input is empty
+	 *
+	 */
 	getSearchTerm: function () {
 		var term = $(Main.e.searchBox).val();
 		if (term.trim() == '') {
@@ -41,6 +50,11 @@ var Main = {
 		}
 		Main.searchTerm = term.trim();
 	},
+	/**
+	 * Starts the entire operation. Gets the list of URL of the user from the local storage. 
+	 * Sends the user a notification if the items could not be retrieved from the DB.
+	 *
+	 */
 	getUrlList: function () {
 		Main.errors = [];
 		browser.storage.local.get(Main.dbKey)
@@ -55,6 +69,12 @@ var Main = {
 				});
 			});
 	},
+	/**
+	 * At the end of the operation verifies if any error was generated when opening the URL list. 
+	 * If errors where present, send the user an final error message with the URLs of the link that 
+	 * didn't open successfully. If no errors where present send the user a success message.
+	 *
+	 */
 	setError: function () {
 		console.log('SET ERROR');
 		var message;
@@ -68,7 +88,7 @@ var Main = {
 				const elem = Main.errors[i];
 				message += `\n${elem.msg}`;
 			}
-		}else{
+		} else {
 			title = 'Success!';
 			icon = 'icons/success.png';
 			message = 'All URLs where opened successfully!';
@@ -81,6 +101,12 @@ var Main = {
 			"message": message
 		});
 	},
+	/**
+	 * Opens a new tab with a given URL. Return the Promise created by the tab creating method.
+	 *
+	 * @param {string} urlP - the URL to open in the new tab
+	 * @returns {Promise} - the Promise created by the tab creation method
+	 */
 	openNewTab: function (urlP) {
 		var tabV = browser.tabs.create({
 			url: urlP
@@ -97,6 +123,12 @@ var Main = {
 
 		return tabV;
 	},
+	/**
+	 * Opens all the URL present in the URL list. Captures all the Promises created by the opening tab method and
+	 * waits for them all to present the user the final message.
+	 *
+	 * @param {Array[string]} urlList - the list with all the URLs to open
+	 */
 	openUrls: function (urlList) {
 		var promises = [];
 		for (let i = 0; i < urlList.length; i++) {
@@ -110,9 +142,19 @@ var Main = {
 			Main.setError();
 		});
 	},
+	/**
+	 * Takes the passed URL with the tag '{{tag}}' and replaces it with the searching term defined by the user.
+	 * 
+	 * @returns {string} - the parsed URL 
+	 */
 	parseUrl: function (urlP) {
 		return urlP.replace(new RegExp('{{tag}}', 'g'), Main.searchTerm);
 	},
+	/**
+	 * Changes the state of the input box and button to prevent multiple searches at the same time.
+	 *
+	 * @param {string} state - the state of the search box and button. Accepts 'on' or 'off'(Default)
+	 */
 	setSearchState: function (state) {
 		switch (state) {
 			case 'on':

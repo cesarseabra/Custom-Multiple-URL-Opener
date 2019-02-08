@@ -7,21 +7,6 @@ body {
   margin: 20px;
 }
 
-.error {
-  top: 45px;
-  width: 100%;
-  position: relative;
-  margin-top: 40px;
-}
-
-.error-btn {
-  color: red;
-  float: right;
-  border: none;
-  background: none;
-  cursor: pointer;
-}
-
 .search {
   width: 100%;
   position: relative;
