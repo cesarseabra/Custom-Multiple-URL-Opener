@@ -10,7 +10,7 @@
   },
 
   "description": "Opens defined URL in new tabs with custom search parameters. Use the tag '{{tag}}' where you want your query to be replaced.",
-  "homepage_url": "https://github.com/cesarseabra",
+  "homepage_url": "https://github.com/cesarseabra/Custom-Multiple-URL-Opener",
   "icons": {
     "48": "icons/icon.png"
   },
